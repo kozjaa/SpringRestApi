@@ -19,7 +19,7 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.getAllUsers();
         if (users.isEmpty()){
-            return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<User>>(users, HttpStatus.NO_CONTENT);
         }
         return new  ResponseEntity<List<User>>(users,HttpStatus.OK);
     }
@@ -37,10 +37,10 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody User user) {
         List<User> users = userRepository.getAllUsers();
         if (users.contains(user)){
-            return new ResponseEntity<User>(HttpStatus.CONFLICT);
+            return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
         }
         userRepository.saveUser(user);
-        return new  ResponseEntity<User>(HttpStatus.CREATED);
+        return new  ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/users/{id}")
@@ -62,6 +62,6 @@ public class UserController {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         userRepository.deleteUserById(id);
-        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<User>(user, HttpStatus.NO_CONTENT);
     }
 }
